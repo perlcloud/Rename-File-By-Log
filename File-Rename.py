@@ -13,27 +13,28 @@ def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def clean_filename(filename):    
+def clean_filename(filename):
     # replace spaces
     filename = filename.replace(' ', '_')
-    
+
     # keep only valid ascii chars
     cleaned_filename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore').decode()
-    
+
     # keep only whitelisted chars
     char_limit = 255
     whitelist = "-_.() %s%s" % (string.ascii_letters, string.digits)
     cleaned_filename = ''.join(c for c in cleaned_filename if c in whitelist)
-    if len(cleaned_filename)>char_limit:
-        print("Warning, filename truncated because it was over {}. Filenames may no longer be unique".format(char_limit))
-    
+    if len(cleaned_filename) > char_limit:
+        print(
+            "Warning, filename truncated because it was over {}. Filenames may no longer be unique".format(char_limit))
+
     return cleaned_filename[:char_limit]
 
 
 def get_log_file():
     """Locates log file based on a job name"""
     while True:
-        # Set and clean jobname
+        # Set and clean job name
         job_name = input('Enter the job name: ')
         job_name = clean_filename(job_name)
 
@@ -118,14 +119,14 @@ with open(job_file, 'r') as file:
             key = data[line][0]
             start_time = data[line][1]
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S.%f')
-            end_time = data[line+1][1]
+            end_time = data[line + 1][1]
             end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S.%f')
             time_dict.update({key: [start_time, end_time]})
         else:
             break
 
-
-file_loc = r'M:\Dropbox\Sandbox\rename files by timestamp\camera_job'
+file_loc = r'M:\Dropbox\Sandbox\Rename-File-By-Log'
+file_loc = os.path.join(file_loc, job_name)
 found_files = [file_loc + '\\' +
                f for f in os.listdir(file_loc)
                if os.path.isfile(os.path.join(file_loc, f))]
@@ -140,8 +141,9 @@ for file in found_files:
         except:
             seq.update({file_id: 1})
         new_name = os.path.join(os.path.dirname(file),
-                file_id + '-({0}){1}'.format(seq[file_id],
-                                            os.path.splitext(file)[1])
-            )
-        # os.rename(file, new_name)
+                                file_id + '-({0}){1}'.format(seq[file_id],
+                                                             os.path.splitext(file)[1])
+                                )
+
+        os.rename(file, new_name)
         log_namechange(job_name, file, new_name)

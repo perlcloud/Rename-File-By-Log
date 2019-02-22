@@ -1,7 +1,5 @@
 import os
 
-from datetime import datetime
-
 timestamp_image = input('Enter the path for the adjustment file: ')
 file_timestamp = os.path.getmtime(timestamp_image)
 

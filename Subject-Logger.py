@@ -25,10 +25,10 @@ def clean_filename(filename):
     char_limit = 255
     whitelist = "-_.() %s%s" % (string.ascii_letters, string.digits)
     cleaned_filename = ''.join(c for c in cleaned_filename if c in whitelist)
-    if len(cleaned_filename)>char_limit:
+    if len(cleaned_filename) > char_limit:
         print('''
               Warning:
-              Filename truncated because it was over {}. Filenames may no longer be unique.
+              Filename truncated because it was over {}. Filename's may no longer be unique.
               '''.format(char_limit))
     
     return cleaned_filename[:char_limit]
@@ -50,10 +50,10 @@ def get_job_name():
             return job_name
 
 
-def insert_title(job_name):
+def insert_title(job):
     """Prints graphic banner with the job name between dashes"""
-    graphic = '-' * int((35 - len(job_name)) / 2)
-    print('{0} {1} {0}'.format(graphic, job_name))
+    graphic = '-' * int((35 - len(job)) / 2)
+    print('{0} {1} {0}'.format(graphic, job))
 
 
 def get_id():
